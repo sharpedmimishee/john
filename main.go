@@ -37,6 +37,13 @@ func main() {
 			}
 		case "update":
 			fmt.Println("i'll update nvim.")
+		case "build":
+			if len(os.Args) <= 2 {
+				fmt.Println("Building latest master branch")
+				build()
+			} else {
+				fmt.Print("john build has no options")
+			}
 		case "release":
 			if len(os.Args) <= 1 {
 				fmt.Println("release needs 1 more options.")
@@ -48,6 +55,25 @@ func main() {
 		}
 	}
 }
+
+func build()  {
+	Check4dir("downloads")
+	downloaddir := Getjohndir() + "downloads/temp"
+	toexec := exec.Command("git", "clone https://github.com/neovim/neovim.git", downloaddir)
+	toexec.Run()
+	os, arch := DetectOS()
+	if os == "windows" {
+		fmt.Println("Windows is not supported yet")
+	} else if os == "linux" {
+		if arch == 32 {
+			fmt.Println("Unsupported arch")
+		} else if arch == 64 {
+
+	toexec = exec.Command("make","-C", downloaddir+"/neovim", "CMAKE_INSTALL_PREFIX=$HOME/local/nvim", "install")
+		}
+	}
+}
+
 
 func help() {
 	fmt.Println("john usage:")
