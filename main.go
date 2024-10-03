@@ -60,7 +60,7 @@ func build()  {
 	Check4dir("downloads")
 	downloaddir := Getjohndir() + "downloads/temp"
 	executecmd("mkdir", "-p", downloaddir)
-	executecmd("git", "clone https://github.com/neovim/neovim.git", downloaddir)
+	executecmd("git", "clone", "https://github.com/neovim/neovim.git", downloaddir)
 	os, arch := DetectOS()
 	if os == "windows" {
 		fmt.Println("Windows is not supported yet")
@@ -68,7 +68,7 @@ func build()  {
 		if arch == 32 {
 			fmt.Println("Unsupported arch")
 		} else if arch == 64 {
-			executecmd("make", "-C", downloaddir+"/neovim", "CMAKE_BUILD_TYPE=Release")
+			executecmd("make", "-C", downloaddir, "CMAKE_BUILD_TYPE=Release")
 			executecmd("sudo", "make", "install")
 		}
 	}
